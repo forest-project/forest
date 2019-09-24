@@ -20,7 +20,9 @@ management:
       exposure:
         include: '*'
 
-
+feign:
+  hystrix:
+    enabled: true
       
       
       

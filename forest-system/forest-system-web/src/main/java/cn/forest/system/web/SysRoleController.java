@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.forest.common.web.util.SysLogs;
+import cn.forest.system.service.SysPermissionsService;
 import cn.forest.system.service.SysRoleService;
 
 @RestController
@@ -21,6 +22,12 @@ public class SysRoleController {
   @SysLogs(desc = "角色列表")
   public Map<String, Object> getList(Long page, Long pageSize) {
     return sysRoleService.getList(page, pageSize);
+  }
+  
+  @RequestMapping("/getPermissions")
+  @SysLogs(desc = "角色列表")
+  public Map<String, Object> getPermissions() {
+    return sysRoleService.getPermissions();
   }
 
 }

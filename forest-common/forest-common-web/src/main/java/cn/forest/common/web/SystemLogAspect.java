@@ -74,7 +74,7 @@ public class SystemLogAspect {
     map.put("methodType", joinPointMap.get("methodType"));
     map.put("description", desc);
     if("POST".equals(joinPointMap.get("methodType"))) {
-      map.put("args",  RequestMap.requestToMap(request));
+      map.put("args", JsonUtil.toJson(RequestMap.requestToMap(request)));
     }else {
       if(joinPoint.getArgs().length>0) {
         map.put("args", Arrays.toString(joinPoint.getArgs()));

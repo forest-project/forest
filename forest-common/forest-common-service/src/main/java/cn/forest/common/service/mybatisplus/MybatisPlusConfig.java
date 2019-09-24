@@ -1,4 +1,4 @@
-package cn.forest.common.service;
+package cn.forest.common.service.mybatisplus;
 
 import java.util.Properties;
 

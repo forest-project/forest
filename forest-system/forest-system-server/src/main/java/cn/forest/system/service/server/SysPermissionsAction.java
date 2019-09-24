@@ -24,6 +24,7 @@ public class SysPermissionsAction {
   public Object getSysPermissions() {
     return sysPermissionsMapper.selectList(null);
   }
+  
 
   @RequestMapping("/listfirstLevel")
   public Object listfirstLevel(Long page, Long pageSize) {

@@ -4,9 +4,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import cn.forest.common.web.fallback.SysLogsBack;
+import cn.forest.system.fallback.SysExceptionLogsVoBack;
 
-@FeignClient(name = "forest-system-server", fallback = SysLogsBack.class)
+
+@FeignClient(name = "forest-system-server", fallback = SysExceptionLogsVoBack.class)
 public interface SysExceptionLogsVoRemote {
   
   @RequestMapping("/sys_exception_logs/list")
