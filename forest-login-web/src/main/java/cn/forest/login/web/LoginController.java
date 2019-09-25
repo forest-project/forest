@@ -17,7 +17,7 @@ public class LoginController {
   @Autowired
   private LoginService loginService;
 
-  @RequestMapping("/")
+  @RequestMapping("")
   public Map<String, Object> getUser(String loginName, String password, HttpServletRequest request) {
     return loginService.getUser(loginName, password, request);
   }

@@ -2,23 +2,49 @@ server:
   port: 8201
  
 spring:  application:    name: forest-login-web
-eureka:
-  instance:
-    prefer-ip-address: true
-    instance-id: localhost:${server.port}
-    lease-renewal-interval-in-seconds: 10
-    health-check-url-path: /actuator/health
-  client:
-    service-url:
-      defaultZone: http://localhost:5555/eureka/
+
+#---------------consul-------------------------
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+                      # 启用服务发现
+        enabled: true
+                      # 是否注册服务
+        register: true
+                      # 服务停止时取消注册
+        deregister: true
+                      # 注册到consul的服务名称
+        service-name: ${spring.application.name}
+                      # 表示注册时使用IP而不是hostname
+        prefer-ip-address: true
+                      # 执行监控检查的频率
+        health-check-interval: 30s
+                      # 设置健康检查失败多长时间后，取消注册
+        health-check-critical-timeout: 30s
+                      # 健康检查的路径
+        health-check-path: /actuator/health
+                      # 服务注册标识，格式为：应用名称+服务器IP+端口
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+
 management:
   endpoint:
     health:
       show-details: always
   endpoints:    web:      exposure:        include: '*'      
+#---------------------feign-hystrix-------------------------
+#高版本spring-cloud-openfeign请求分为两层，先ribbon控制，后hystrix控制
+#feign配置
 feign:
   hystrix:
-    enabled: true        
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
 
 
       

@@ -1,0 +1,64 @@
+server:
+  port: 8111
+  
+spring:
+  application:
+    name: forest-gateway
+
+#---------------consul----------------------------------
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+                      # 启用服务发现
+        enabled: true
+                      # 是否注册服务
+        register: true
+                      # 服务停止时取消注册
+        deregister: true
+                      # 注册到consul的服务名称
+        service-name: ${spring.application.name}
+                      # 表示注册时使用IP而不是hostname
+        prefer-ip-address: true
+                      # 执行监控检查的频率
+        health-check-interval: 30s
+                      # 设置健康检查失败多长时间后，取消注册
+        health-check-critical-timeout: 30s
+                      #健康检查的路径
+        health-check-path: /actuator/health
+                      # 服务注册标识，格式为：应用名称+服务器IP+端口
+        instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+        
+#---------------spring cloud gateway-------------------------
+    gateway:
+      routes:
+        - id: api-a
+          uri: lb://forest-system-server
+          predicates:
+            - Path=/forest-system-server/**
+          filters:
+                                 #去除前缀
+            - StripPrefix=1
+        
+        - id: api-login
+          uri: lb://forest-login-web
+          predicates:
+            - Path=/forest-login-web/**
+          filters:
+                                 #去除前缀
+            - StripPrefix=1
+        
+        - id: api-sysWeb
+          uri: lb://forest-system-web
+          predicates:
+            - Path=/forest-system-web/**
+          filters:
+                                 #去除前缀
+            - StripPrefix=1
+      default-filters:
+        - name: Hystrix
+          args:
+            name: defaultfallback
+            fallbackUri: forward:/defaultfallback
+      
